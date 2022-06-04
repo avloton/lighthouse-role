@@ -1,0 +1,32 @@
+---
+# tasks file for lighthouse
+- name: Check Host
+  ansible.builtin.meta: end_host
+  when: ansible_distribution  != "CentOS"
+- name: Install repository EPEL
+  become: true
+  ansible.builtin.yum:
+    name:
+      - epel-release
+- name: Install Git
+  become: true
+  ansible.builtin.yum:
+    name:
+      - git
+- name: Install Nginx
+  become: true
+  ansible.builtin.yum:
+    name:
+      - nginx
+- name: Clear web directory
+  become: true
+  ansible.builtin.file:
+    path: /usr/share/nginx/html
+    state: absent
+- name: Clone LightHouse repository
+  become: true
+  ansible.builtin.git:
+    repo: https://github.com/VKCOM/lighthouse.git
+    dest: /usr/share/nginx/html
+    version: master
+  notify: Start Nginx

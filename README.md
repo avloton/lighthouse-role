@@ -1,1 +1,4 @@
-# lighthouse-role
+Ansible LighHouse
+=========
+
+Role for install LightHouse.
